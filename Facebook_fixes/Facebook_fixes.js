@@ -32,9 +32,9 @@ if(window.location.href != current_window ){
  
 (function (){
 	scrollRightPane();
-	layoutFixes();
+	//layoutFixes();
 	deleteLeftList();
-	deleteRightMidSuggestions();
+	//deleteRightMidSuggestions();
 	//layoutFixes();
 	//chatExpand();
 	//centerContent();
