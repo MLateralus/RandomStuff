@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import javax.swing.*;
 import org.openqa.selenium.*;
@@ -7,7 +12,7 @@ class Download {
 	
 	WebDriver driver = new ChromeDriver();	
 	
-	void account_log () throws InterruptedException {
+	void account_log (String clogin, String cpassword) throws InterruptedException {
 		driver.get("https://www.packtpub.com/");
 		//Thread.sleep(1000);
 		
@@ -36,8 +41,8 @@ class Download {
 		WebElement email = driver.findElement(By.id("email"));
 		WebElement pswd = driver.findElement(By.id("password"));
 		
-		email.sendKeys("xxxxxx");
-		pswd.sendKeys("xxxxxx");
+		email.sendKeys(clogin);
+		pswd.sendKeys(cpassword);
 		
 		//Thread.sleep(1000);
 		WebElement login_button = driver.findElement(By.id("edit-submit-1"));
@@ -68,12 +73,23 @@ class Download {
 
 public class Book {
 	
-	public static void main(String[] args) throws InterruptedException {
-		System.setProperty("webdriver.chrome.driver", "xxxxxx");
+	public static void main(String[] args) throws InterruptedException, IOException {
+		
+		String credentials = new String(Files.readAllBytes(Paths.get(System.getProperty("user.dir") + "\\" + "Credentials.txt")));
+		
+		String clogin = credentials.substring(credentials.indexOf("login:") + "login:".length(),credentials.indexOf("password"));
+		String cpassword = credentials.substring(credentials.indexOf("password:") + "password:".length(),credentials.indexOf("location"));
+		String clocation = credentials.substring(credentials.indexOf("location:") + "location:".length(),credentials.length());
+		System.out.println(clogin);
+		System.out.println(cpassword);
+		System.out.println(clocation);
+		
+		System.setProperty("webdriver.chrome.driver", clocation);
 
 		Download obj = new Download();
-		obj.account_log();
+		obj.account_log(clogin,cpassword);
 		obj.download_free_book();	
+
 
 	}
 }
